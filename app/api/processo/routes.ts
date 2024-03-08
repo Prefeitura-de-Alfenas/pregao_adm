@@ -1,6 +1,6 @@
 import { baseUrl, takeBase } from "@/config/base";
-import { ProcessoCreateI } from "@/interfaces/Processo/inteface";
-import { FornecedorCreateI } from "@/interfaces/fornecedor/inteface";
+import { ProcessoCreateI, ProcessoxFornecedorI } from "@/interfaces/Processo/inteface";
+
 
 
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
@@ -31,6 +31,33 @@ const GetProcessos = async (usuario:UsuarioLogadoI,skip:number,filter:string) =>
     return fornecedadores ;
     
 }
+
+const GetFornecedoresProcesso = async (usuario:UsuarioLogadoI,id:string) => {
+
+    const url = `${baseUrl}/processo/processofornecedor/${id}`;	
+    const response = await fetch(url,{
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+
+        },
+    })
+   
+    if (response.statusText === 'Unauthorized') {
+        throw new Error("Você não tem autorização")
+     }
+  
+    if (!response.ok) {
+       throw new Error("Conexão com a rede está com problema")
+    }
+ 
+    const processo = await response.json() 
+ 
+    return processo ;
+    
+}
+
 
 const GetModaliadeSituacao = async (usuario:UsuarioLogadoI) => {
 
@@ -118,4 +145,53 @@ const GetProcessoById = async (usuario:UsuarioLogadoI,id:string)=>{
     return processo;
 }
 
-export{GetProcessos,CreateProcesso,UpdateProcesso,GetProcessoById,GetModaliadeSituacao}
+const ForncedorChange = async(data:ProcessoxFornecedorI) =>{
+    const url = `${baseUrl}/processo/fornecedorchange`
+
+    const response = await fetch(url,{
+      method:'PATCH',
+      headers:{
+         'content-type': 'application/json',
+         'Authorization' :`Bearer ${data.usuario.user.access_token}`
+      },
+      body: JSON.stringify(data)
+    })
+ 
+    if(!response.ok) {
+     throw new Error("Conexão com a rede está com problemas");
+    }
+
+    
+    const usuario = await response.json()
+
+
+    return usuario;
+}
+
+const GetFornecedoresemprocesso = async (usuario:UsuarioLogadoI,skip:number,ativo:boolean,IdProcesso:string,filter:string) => {
+    console.log("jkdjsfaçlksdjafkasjdflçsadjfsda",IdProcesso)
+    const url = `${baseUrl}/processo/getallfornecedores?id=${IdProcesso}&take=${takeBase}&skip=${skip}&ativo=${ativo}&filter=${filter}`;	
+    const response = await fetch(url,{
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+
+        },
+    })
+   
+    if (response.statusText === 'Unauthorized') {
+        throw new Error("Você não tem autorização")
+     }
+  
+    if (!response.ok) {
+       throw new Error("Conexão com a rede está com problema")
+    }
+   
+    const fornecedadores = await response.json() 
+ 
+    return fornecedadores ;
+}
+   
+
+export{GetProcessos,CreateProcesso,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso}

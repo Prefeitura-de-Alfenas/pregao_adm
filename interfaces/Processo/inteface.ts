@@ -1,5 +1,6 @@
 import { MoadalidadeI } from "../moadalidade/inteface"
 import { SituacaoI } from "../situacao/interface"
+import { UsuarioLogadoI } from "../usuario/interface";
 
 
 
@@ -48,5 +49,11 @@ export interface ProcessoEntregaI{
     IdUsuario:                number,
 
    
+}
+
+export interface ProcessoxFornecedorI{
+    IdProcesso:   string;
+    IdFornecedor: string;
+    usuario:UsuarioLogadoI;
 }
 

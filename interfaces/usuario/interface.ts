@@ -1,4 +1,4 @@
-import { EquipamentoI } from "../situacao/interface";
+
 
 export  interface UsuarioI{
     IdUsuario: number,

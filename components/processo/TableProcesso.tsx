@@ -125,7 +125,7 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
                 <TableCell className="font-medium">{convertDataParaPtBr(fornecedor.DataAbertura)}</TableCell>
             
               
-                <TableCell><Link href={`/processo/edit/${fornecedor.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/processo/fornecedores/${fornecedor.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
                 <TableCell><Link href={`/processo/edit/${fornecedor.IdProcesso}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
                 
 
