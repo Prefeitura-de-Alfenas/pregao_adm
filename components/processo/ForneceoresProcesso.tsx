@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
     PaginationPrevious,
   } from "@/components/ui/pagination"
 
-import { FileEdit,  Search, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ArrowBigDown, ArrowBigLeft, FileEdit,  Search, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "../ui/button";
 
 
@@ -62,7 +62,7 @@ const TableFornecedorProcesso = ({usuario,IdProcesso}:TableFornecedorProps) => {
   })
 
   const {data:dataProcesso,isPending:isPedingProcesso,isError:isErrorProcesso,refetch:refetchProcesso} = useQuery({
-    queryKey:['processo'],
+    queryKey:['forncedorxprocesso'],
     queryFn:() => GetFornecedoresProcesso(usuario,IdProcesso),
 
     
@@ -135,8 +135,16 @@ const TableFornecedorProcesso = ({usuario,IdProcesso}:TableFornecedorProps) => {
   
     return ( 
         <div className="flex flex-col ">    
-        <div className="flex items-start justify-start">
+        <div>
+          <h1 className="text-center font-bold text-2xl">Lista de processos</h1>
+          <h1 className="text-center font-bold text-xl mt-2">Número do processo: {dataProcesso.Numero}</h1>
+        </div>
+       
+        
+        
+        <div className="flex items-start justify-between">
         <Button className="ms-1 mt-4 mb-4 text-white font-bold"><Link href="/fornecedor/create">Novo Fornecedor</Link></Button>
+        <Button className="ms-1 mt-4 mb-4 text-white font-bold me-10" variant="outline" size="icon"><Link href="/processo"><ArrowBigLeft /></Link></Button>
         </div> 
         <div className="flex w-2/3 ms-1">
         <div className="relative w-full">
