@@ -37,17 +37,17 @@ import {  useState } from "react";
 
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
 import { useToast } from "@/components/ui/use-toast"
-import { GetArquivo, GetArquivoPessoa } from "@/app/api/arquivo/route";
+import { GetArquivo, GetArquivoProcesso } from "@/app/api/arquivo/route";
 import { Arquivo } from "@/interfaces/arquivo/interface";
 import { Button } from "../ui/button";
 import FixedButton from "./AddButton";
 import DeleteSoftArquivo from "./DialogDeleteSoft/DeleteArquivo";
 
 interface TableEntregasProps{
-  pessoaId:string;
+  IdProcesso:string;
   usuario:UsuarioLogadoI
 }
-const TableArquivos = ({usuario,pessoaId}:TableEntregasProps) => {
+const TableArquivos = ({usuario,IdProcesso}:TableEntregasProps) => {
   const { toast } = useToast()
 
   const [skip,setSkipped] = useState(0)
@@ -59,8 +59,8 @@ const TableArquivos = ({usuario,pessoaId}:TableEntregasProps) => {
 
   // Queries
   const {data,isPending,isError,error,refetch} = useQuery({
-    queryKey:['entregas',skip,search,pessoaId],
-    queryFn:() => GetArquivoPessoa(usuario,pessoaId,skip,search),
+    queryKey:['entregas',skip,search,IdProcesso],
+    queryFn:() => GetArquivoProcesso(usuario,IdProcesso,skip,search),
 
     
   })
@@ -127,7 +127,7 @@ const TableArquivos = ({usuario,pessoaId}:TableEntregasProps) => {
         <div className="flex flex-col "> 
   
         <div className="flex justify-end items-center me-7 mb-6">
-          <Link href="/pessoas"><ArrowLeftFromLine size={48} /></Link>
+          <Link href="/processo"><ArrowLeftFromLine size={48} /></Link>
         </div>
         <div className="flex w-2/3 ms-1">
         <div className="relative w-full">
@@ -151,7 +151,7 @@ const TableArquivos = ({usuario,pessoaId}:TableEntregasProps) => {
         <TableHeader>
             <TableRow>
             <TableHead>Nome</TableHead>
-            <TableHead>Benefíciario</TableHead>
+            <TableHead>Processo</TableHead>
             <TableHead>Arquivo</TableHead>
             <TableHead>Delete</TableHead>
            
@@ -161,16 +161,16 @@ const TableArquivos = ({usuario,pessoaId}:TableEntregasProps) => {
          
       
             {data?.map((arquivo:Arquivo) => (
-             <TableRow key={arquivo.id}>
-                <TableCell className="font-medium">{arquivo.nome}</TableCell>
-                <TableCell className="font-medium">{arquivo.pessoa.nome}</TableCell>
+             <TableRow key={arquivo.IdArquivo}>
+                <TableCell className="font-medium">{arquivo.Nome}</TableCell>
+                <TableCell className="font-medium">{arquivo.Processo.Numero}</TableCell>
              
-                <TableCell onClick={() => handelClickImagem(arquivo.id)} className="cursor-pointer">
+                <TableCell onClick={() => handelClickImagem(arquivo.IdArquivo)} className="cursor-pointer">
                 <DownloadCloud  fill="#312e81" />
                 </TableCell>
 
                 <TableCell>
-                    <DeleteSoftArquivo id={arquivo.id} refetch={refetch} usuario={usuario} />
+                    <DeleteSoftArquivo id={arquivo.IdArquivo} refetch={refetch} usuario={usuario} />
                 </TableCell>
 
                  
@@ -200,7 +200,7 @@ const TableArquivos = ({usuario,pessoaId}:TableEntregasProps) => {
           </PaginationItem>
         </PaginationContent>
        </Pagination>
-       <FixedButton pessoaId={pessoaId}/>
+       <FixedButton pessoaId={IdProcesso}/>
 </div>
 
      );

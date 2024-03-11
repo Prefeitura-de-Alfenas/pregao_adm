@@ -18,12 +18,16 @@ import { useEffect, useState } from "react";
 
 const MAX_FILE_SIZE = 5000000
 const ACCEPTED_IMAGE_TYPES = [
- 'image/jpeg',
- 'image/jpg',
- 'image/png',
- 'image/webp',
- 'application/pdf'
-]
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  'application/pdf',
+  'application/zip', // .zip
+  'application/x-rar-compressed', // .rar
+  'application/vnd.rar', // .rar (alternative)
+  'application/cot', // .COT
+];
 
 
 
@@ -40,7 +44,7 @@ const formSchema = z.object({
     .refine((files) => files?.[0]?.size <= MAX_FILE_SIZE, {
       message: `Max file size is 5MB.`,
      }),
-     nome:z.string().refine((val) => val.length >= 3, {
+     Nome:z.string().refine((val) => val.length >= 3, {
       message: "Tem que ter no minimo 3 caracteres",
     }),
 
@@ -53,12 +57,12 @@ const formSchema = z.object({
 type FormData =z.infer<typeof formSchema>;
 
 interface GerarEntregaProps{
-  pessoaId:string,
+  IdProcesso:string,
   userLogado:UsuarioLogadoI,
  
 }
 
-function CarregarArquivo({pessoaId,userLogado}:GerarEntregaProps) {
+function CarregarArquivo({IdProcesso,userLogado}:GerarEntregaProps) {
 
   const router = useRouter();
   const [fileName, setFileName] = useState('')
@@ -96,7 +100,7 @@ function CarregarArquivo({pessoaId,userLogado}:GerarEntregaProps) {
              title: "Arquivo salvo com sucesso",
            })
   
-           router.push(`/arquivo/${data.pessoId}`)
+           router.push(`/arquivo/${IdProcesso}`)
            
       }
     
@@ -112,10 +116,9 @@ function CarregarArquivo({pessoaId,userLogado}:GerarEntregaProps) {
       
       const dataEntrega : ArquivoCreateI = {
         ...arquivo,
-        pessoId:pessoaId
+        IdProcesso:IdProcesso
 
       }
-
 
       mutation.mutate(dataEntrega)
     }
@@ -126,21 +129,19 @@ function CarregarArquivo({pessoaId,userLogado}:GerarEntregaProps) {
       <form onSubmit={handleSubmit(onSubmit)} >
       <h1 className="text-center font-bold text-2xl mb-4 mt-10">Criar Arquivo</h1>
       <div className=" mx-auto mt-8 pe-56 ps-56 pb-1 pt-1 shadow-md grid md:grid-cols-1 grid-cols-1 gap-4">
-        {/* Coluna 1 */}
+ 
 
       <div>
     
         <div className="mb-4">
-        <Label htmlFor="file">Arquivo</Label>
-        {fileName}
-        <input type="file"  id="file"
-        {...register('file')} 
-        placeholder="Arquivo" className="mt-1 p-2 w-full border rounded-md mb-2  bg-transparent " required  />
-        {errors.file?.message && <p className="text-sm text-red-400">{"Arquivo obrigatorio"}</p> }
-          </div>
+          <Label htmlFor="file">Arquivo</Label>
+          {fileName}
+          <input type="file"  id="file"
+          {...register('file')} 
+          placeholder="Arquivo" className="mt-1 p-2 w-full border rounded-md mb-2  bg-transparent " required  />
+          {errors.file?.message && <p className="text-sm text-red-400">{"Arquivo obrigatorio"}</p> }
+        </div>
         
-        
-     
         </div>
 
 
@@ -149,8 +150,8 @@ function CarregarArquivo({pessoaId,userLogado}:GerarEntregaProps) {
       <div className=" mx-auto  pe-56 ps-56  pb-1 pt-1 shadow-md grid grid-cols-1 gap-4 mb-12">
         <div className="grid w-full gap-1.5">
         <Label htmlFor="message">Nome</Label>
-        <Input  id="nome" {...register('nome')} placeholder="Nome do arquivo" className="mt-1 p-2 w-full border rounded-md mb-2  bg-transparent" />
-        {errors.nome?.message && <p className="text-sm text-red-400">{errors.nome?.message}</p> }
+        <Input  id="Nome" {...register('Nome')} placeholder="Nome do arquivo" className="mt-1 p-2 w-full border rounded-md mb-2  bg-transparent" />
+        {errors.Nome?.message && <p className="text-sm text-red-400">{errors.Nome?.message}</p> }
        </div>
 
      

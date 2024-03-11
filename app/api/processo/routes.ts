@@ -169,7 +169,7 @@ const ForncedorChange = async(data:ProcessoxFornecedorI) =>{
 }
 
 const GetFornecedoresemprocesso = async (usuario:UsuarioLogadoI,skip:number,ativo:boolean,IdProcesso:string,filter:string) => {
-    console.log("jkdjsfaçlksdjafkasjdflçsadjfsda",IdProcesso)
+
     const url = `${baseUrl}/processo/getallfornecedores?id=${IdProcesso}&take=${takeBase}&skip=${skip}&ativo=${ativo}&filter=${filter}`;	
     const response = await fetch(url,{
         method: 'GET',

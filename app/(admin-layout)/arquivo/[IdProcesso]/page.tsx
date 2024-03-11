@@ -1,10 +1,10 @@
 import TableArquivos from "@/components/arquivo/TableArquivos";
 import { getUsuarioLogado } from "@/utils/getUsuarioLogado";
 
- async function  Arquivo({ params }: { params: { pessoaId: string } }) {
+ async function  Arquivo({ params }: { params: { IdProcesso: string } }) {
   const usuarioLogado = await getUsuarioLogado();
     return ( 
-      <TableArquivos pessoaId={params.pessoaId} usuario={usuarioLogado} />
+      <TableArquivos IdProcesso={params.IdProcesso} usuario={usuarioLogado} />
      );
 }
 

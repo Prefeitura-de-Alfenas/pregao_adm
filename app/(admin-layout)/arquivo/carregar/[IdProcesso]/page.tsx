@@ -4,10 +4,10 @@ import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
 import { authOptions } from "@/utils/authOptions";
 import CarregarArquivo from "@/components/arquivo/CarregarArquivo";
 
-async function Arquivo({ params }: { params: { pessoaId: string } }) {
+async function Arquivo({ params }: { params: { IdProcesso: string } }) {
     const session = await getServerSession(authOptions) as UsuarioLogadoI
     return (  
-        <CarregarArquivo pessoaId={params.pessoaId} userLogado={session} />
+        <CarregarArquivo IdProcesso={params.IdProcesso} userLogado={session} />
     );
 }
 export default Arquivo;

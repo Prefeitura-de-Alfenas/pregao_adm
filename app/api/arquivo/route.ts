@@ -3,9 +3,8 @@ import { ArquivoCreateI } from "@/interfaces/arquivo/interface";
 
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
 
-const GetArquivoPessoa = async (usuario:UsuarioLogadoI,pessoaId:string,skip:number,filter:string) => {
-
-    const url = `${baseUrl}/arquivo/findallforpessoas/${pessoaId}/take/${takeBase}/skip/${skip}/${filter}`;	
+const GetArquivoProcesso = async (usuario:UsuarioLogadoI,IdProcesso:string,skip:number,filter:string) => {
+    const url = `${baseUrl}/arquivo/processosallarquivos?id=${IdProcesso}&take=${takeBase}&skip=${skip}&filter=${filter}`;	
     const response = await fetch(url,{
         method: 'GET',
         headers: {
@@ -72,7 +71,7 @@ const DeleteArquivo = async (usuario:UsuarioLogadoI,id:string) => {
 }
 
 const CreateArquivo = async (usuario: UsuarioLogadoI, data: ArquivoCreateI) => {
-
+    console.log("Datatatatatatatata",data)
     const url = `${baseUrl}/arquivo/upload`;
     if(!data.file){
         throw new Error("O arquivo nao existe")
@@ -80,12 +79,12 @@ const CreateArquivo = async (usuario: UsuarioLogadoI, data: ArquivoCreateI) => {
     //@ts-ignore
     const file = data.file[0];
 
-    console.log(data.nome);
+
 
     const formData = new FormData();
     formData.append('file', file); // Adiciona o arquivo ao FormData
-    formData.append('nome', data.nome); // Adiciona o nome ao FormData
-    formData.append('pessoId', data.pessoId); // Adiciona o ID da pessoa ao FormData
+    formData.append('Nome', data.Nome); // Adiciona o nome ao FormData
+    formData.append('IdProcesso', data.IdProcesso); // Adiciona o ID da pessoa ao FormData
    
 
 
@@ -108,4 +107,4 @@ const CreateArquivo = async (usuario: UsuarioLogadoI, data: ArquivoCreateI) => {
     return entrega;
 }
 
-export {GetArquivoPessoa,GetArquivo,CreateArquivo,DeleteArquivo}
+export {GetArquivoProcesso,GetArquivo,CreateArquivo,DeleteArquivo}

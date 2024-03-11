@@ -110,6 +110,7 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
             <TableHead>Situação</TableHead>
             <TableHead>Modalidade</TableHead>
             <TableHead>Data Abertura</TableHead>
+            <TableHead>Arquivos</TableHead>
             <TableHead>Fornnecedores</TableHead>
             <TableHead>Editar</TableHead>
             </TableRow>
@@ -117,16 +118,17 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
         <TableBody>
          
       
-            {data?.map((fornecedor:ProcessoI) => (
-             <TableRow key={fornecedor.IdProcesso}>
-                <TableCell className="font-medium">{fornecedor.Numero}</TableCell>
-                <TableCell className="font-medium">{fornecedor.Situacao.Nome}</TableCell>
-                <TableCell className="font-medium">{fornecedor.Modalidade.Nome}</TableCell>
-                <TableCell className="font-medium">{convertDataParaPtBr(fornecedor.DataAbertura)}</TableCell>
+            {data?.map((processo:ProcessoI) => (
+             <TableRow key={processo.IdProcesso}>
+                <TableCell className="font-medium">{processo.Numero}</TableCell>
+                <TableCell className="font-medium">{processo.Situacao.Nome}</TableCell>
+                <TableCell className="font-medium">{processo.Modalidade.Nome}</TableCell>
+                <TableCell className="font-medium">{convertDataParaPtBr(processo.DataAbertura)}</TableCell>
             
               
-                <TableCell><Link href={`/processo/fornecedores/${fornecedor.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
-                <TableCell><Link href={`/processo/edit/${fornecedor.IdProcesso}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/arquivo/${processo.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/processo/processoes/${processo.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/processo/edit/${processo.IdProcesso}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
                 
 
                 
