@@ -1,5 +1,4 @@
 "use client"
-import { ChangeStatus } from "@/app/api/pessoas/routes";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -9,13 +8,16 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+
   } from "@/components/ui/dialog"
 import { useMutation } from "@tanstack/react-query";
 import { Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
+import { DeleteArquivo } from "@/app/api/arquivo/route";
+import { DeleteProcesso } from "@/app/api/processo/routes";
 
-interface DeleteSoftPessoa{
+interface DeleteSoftProcesso{
     id:string
     refetch:()=>void,
     usuario:UsuarioLogadoI
@@ -23,11 +25,11 @@ interface DeleteSoftPessoa{
 
 }
 
-function DeleteSoftPessoa({usuario,id,refetch}:DeleteSoftPessoa) {
+function DeleteSoftProcesso({usuario,id,refetch}:DeleteSoftProcesso) {
     const { toast } = useToast()
     const mutation = useMutation({
         mutationFn: ({id}:{id:string}) => {
-          return  ChangeStatus(usuario,id)
+          return  DeleteProcesso(usuario,id)
           .then((response) => response);
   
         },
@@ -49,15 +51,15 @@ function DeleteSoftPessoa({usuario,id,refetch}:DeleteSoftPessoa) {
             <DialogTrigger><Trash2 fill="red" /></DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                <DialogTitle>Você está abusolutamente certo que quer desativar essa familia?</DialogTitle>
+                <DialogTitle>Você está abusolutamente certo que quer deleter esse processo?</DialogTitle>
                 <DialogDescription>
-                   Se voce desativar essa familia não poderá mais receber beneficios ou qual quer outro tipo de atendimento
+                   Se voce deletar esse processo vai ter perder os dados referente ao processo
                 </DialogDescription>
                 </DialogHeader>
                 <div className="p-2">
                 <DialogClose asChild>
                 <Button   onClick={() => 
-                mutation.mutate({id:id })}className="mt-2 text-white font-bold">Desativar</Button>
+                mutation.mutate({id:id })}className="mt-2 text-white font-bold">Apagar</Button>
                 </DialogClose>
                 </div>
             </DialogContent>
@@ -65,4 +67,4 @@ function DeleteSoftPessoa({usuario,id,refetch}:DeleteSoftPessoa) {
      );
 }
 
-export default DeleteSoftPessoa;
+export default DeleteSoftProcesso;

@@ -53,7 +53,7 @@ export default function Home() {
      return
     }
 
-    router.replace('/pessoas')
+    router.replace('/processo')
 
     
 

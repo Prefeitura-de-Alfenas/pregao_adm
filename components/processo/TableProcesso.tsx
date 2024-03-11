@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
     PaginationPrevious,
   } from "@/components/ui/pagination"
 
-import { Box, FileEdit,  Search } from "lucide-react";
+import { Box, FileBox, FileEdit,  Search } from "lucide-react";
 import { Button } from "../ui/button";
 
 
@@ -39,6 +39,7 @@ import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
 import { GetProcessos } from "@/app/api/processo/routes";
 import { ProcessoI } from "@/interfaces/Processo/inteface";
 import { convertDataHoraParaPtBr, convertDataParaPtBr } from "@/utils/converDateParaInput";
+import DeleteSoftProcesso from "./DialogDeleteSoft/DelteProcesso";
 
 
 interface TableProcessoProps{
@@ -52,7 +53,7 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
   const [search,setSearch] = useState('')
 
   // Queries
-  const {data,isPending,isError,error} = useQuery({
+  const {data,isPending,isError,error,refetch} = useQuery({
     queryKey:['processos',skip,search],
     queryFn:() => GetProcessos(usuario,skip,search),
 
@@ -126,9 +127,13 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
                 <TableCell className="font-medium">{convertDataParaPtBr(processo.DataAbertura)}</TableCell>
             
               
-                <TableCell><Link href={`/arquivo/${processo.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/arquivo/${processo.IdProcesso}`} ><FileBox   fill="#312e81" /></Link></TableCell>
                 <TableCell><Link href={`/processo/processoes/${processo.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
                 <TableCell><Link href={`/processo/edit/${processo.IdProcesso}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
+
+                <TableCell>
+                    <DeleteSoftProcesso id={processo.IdProcesso} refetch={refetch} usuario={usuario} />
+                </TableCell>
                 
 
                 

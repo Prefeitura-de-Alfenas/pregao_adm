@@ -1,5 +1,4 @@
 "use client"
-
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -9,14 +8,15 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
+
   } from "@/components/ui/dialog"
 import { useMutation } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
+import { FileUp, Trash2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast"
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
-import { ChangeStatusEntrega } from "@/app/api/entrega/routes";
+import { DeleteProcesso } from "@/app/api/processo/routes";
 
-interface DeleteSoftEntrega{
+interface DeleteSoftProcesso{
     id:string
     refetch:()=>void,
     usuario:UsuarioLogadoI
@@ -24,11 +24,11 @@ interface DeleteSoftEntrega{
 
 }
 
-function DeleteSoftEntrega({usuario,id,refetch}:DeleteSoftEntrega) {
+function AtivarSoftProcesso({usuario,id,refetch}:DeleteSoftProcesso) {
     const { toast } = useToast()
     const mutation = useMutation({
         mutationFn: ({id}:{id:string}) => {
-          return  ChangeStatusEntrega(usuario,id)
+          return  DeleteProcesso(usuario,id)
           .then((response) => response);
   
         },
@@ -47,18 +47,18 @@ function DeleteSoftEntrega({usuario,id,refetch}:DeleteSoftEntrega) {
       })
     return ( 
         <Dialog>
-            <DialogTrigger><Trash2 fill="red" /></DialogTrigger>
+            <DialogTrigger><FileUp fill="green" /></DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                <DialogTitle>Você está abusolutamente certo que quer desativar essa entrega?</DialogTitle>
+                <DialogTitle>Você está abusolutamente certo que quer Reativar esse processo?</DialogTitle>
                 <DialogDescription>
-                   Se voce desativar essa entrega não contabilizara nos relatorios e anulara a validade do mesmo
+                   Se voce Reatuvar esse processo vai ter os dados que já foram excluidos novamente.
                 </DialogDescription>
                 </DialogHeader>
                 <div className="p-2">
                 <DialogClose asChild>
                 <Button   onClick={() => 
-                mutation.mutate({id:id })}className="mt-2 text-white font-bold">Desativar</Button>
+                   mutation.mutate({id:id })}className="mt-2 text-white font-bold">Ativar</Button>
                 </DialogClose>
                 </div>
             </DialogContent>
@@ -66,4 +66,4 @@ function DeleteSoftEntrega({usuario,id,refetch}:DeleteSoftEntrega) {
      );
 }
 
-export default DeleteSoftEntrega;
+export default AtivarSoftProcesso;

@@ -14,7 +14,7 @@ export default async function PrivacyLayout({children}: PrivaceLayoutProps) {
 
     const session = await getServerSession(authOptions)
     if(session) {
-        redirect('/pessoas')
+        redirect('/processo')
     }
   return (
     <>{children}</>

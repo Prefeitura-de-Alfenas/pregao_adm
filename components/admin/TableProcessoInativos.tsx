@@ -11,50 +11,57 @@ import {
     TableRow,
   } from "@/components/ui/table"
 import { Input } from "@/components/ui/input";
-import {
+  import {
     Pagination,
     PaginationContent,
     PaginationItem,
     PaginationLink,
     PaginationNext,
     PaginationPrevious,
-} from "@/components/ui/pagination"
+  } from "@/components/ui/pagination"
 
-import { Bitcoin, FileEdit,Search, ThumbsDown, ThumbsUp,  UsersRound } from "lucide-react";
+import { Box, FileBox, FileEdit,  Search } from "lucide-react";
 import { Button } from "../ui/button";
 
-import {
 
+
+import {
   useQuery,
 } from '@tanstack/react-query'
-import {   GetPessasInativa } from "@/app/api/pessoas/routes";
-import { PessoaI } from "@/interfaces/pessoa/interface";
-import { useState } from "react";
+
+import {  useState } from "react";
+
+
+
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
-import AddPessoa from "./DialogAddPessoa/AddPessoa";
-import { redirect } from 'next/navigation'
-import { useToast } from "../ui/use-toast";
+
+
+import {  GetProcessosDesativados } from "@/app/api/processo/routes";
+import { ProcessoI } from "@/interfaces/Processo/inteface";
+import {  convertDataParaPtBr } from "@/utils/converDateParaInput";
+
+import AtivarSoftProcesso from "./DialogActivitSoft/AtivaProcesso";
 
 
 
-interface TablePessoasProps{
-  usuarioLogado:UsuarioLogadoI
+interface TableProcessoProps{
+  usuario:UsuarioLogadoI
 }
-const TablePessoasInativas = ({usuarioLogado}:TablePessoasProps) => {
-  const { toast } = useToast()
- 
+const TableProcessoInativos = ({usuario}:TableProcessoProps) => {
+
+
   const [skip,setSkipped] = useState(0)
   const [filter,setFilter] = useState('')
   const [search,setSearch] = useState('')
 
   // Queries
-  const {data,isPending,isError,error, refetch } = useQuery({
-    queryKey:['pessoasinativas',skip,search],
-    queryFn:() => GetPessasInativa(usuarioLogado,skip,search),
+  const {data,isPending,isError,error,refetch} = useQuery({
+    queryKey:['processos',skip,search],
+    queryFn:() => GetProcessosDesativados(usuario,skip,search),
 
     
   })
-  
+
  
  const handleFilter = (event:React.ChangeEvent<HTMLInputElement>) =>{
   event.preventDefault();
@@ -66,31 +73,20 @@ const TablePessoasInativas = ({usuarioLogado}:TablePessoasProps) => {
  const handelClickSearcher = () =>{
     setSearch(filter)
  }
-
-
-
-
- if (isError) {
-  toast({
-    title: "Permissão negada",
-    description:"Você não tem permissão para acessar essa pagina"
-  
-  })
-  redirect('/pessoas')
-}
-  
   if (isPending) {
     return <div className="flex items-center justify-center mt-5">Loading...</div>
   }
 
-
+  if (isError) {
+    return <div className="flex items-center justify-center">Error: {error.message}</div>
+  }
 
  
   
     return ( 
         <div className="flex flex-col ">    
         <div className="flex items-start justify-start">
-        <Button className="ms-1 mt-4 mb-4 text-white font-bold"><Link href="/pessoas/novapessoa">Novo Responsavel </Link></Button>
+        <Button className="ms-1 mt-4 mb-4 text-white font-bold"><Link href="/processo/create">Novo Processo</Link></Button>
         </div> 
         <div className="flex w-2/3 ms-1">
         <div className="relative w-full">
@@ -102,7 +98,7 @@ const TablePessoasInativas = ({usuarioLogado}:TablePessoasProps) => {
             value={filter}
             required
             className="mt-1 p-2 w-full border rounded-md mb-2 bg-transparent pr-10" // Aumente o padding à direita para acomodar o ícone
-            placeholder="Digite o CPF"
+            placeholder="Digite o número do processo"
           />
          <span className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
           <Search onClick={handelClickSearcher} />
@@ -110,40 +106,34 @@ const TablePessoasInativas = ({usuarioLogado}:TablePessoasProps) => {
         </div>
       </div>
         <Table>
-        <TableCaption>Pessoas</TableCaption>
+        <TableCaption>Processos</TableCaption>
         <TableHeader>
             <TableRow>
-            <TableHead>Nome</TableHead>
-            <TableHead>CPF</TableHead>
-            <TableHead>Email</TableHead>
-           
-            <TableHead>Editar</TableHead>
-            <TableHead>Familiares</TableHead>
-            <TableHead>Beneficios</TableHead>
-            {usuarioLogado.user.role.find((row:string) => row === "Admin") && 
-               <TableHead>Ativar</TableHead>
-             }
+            <TableHead>Numeor</TableHead>
+            <TableHead>Situação</TableHead>
+            <TableHead>Modalidade</TableHead>
+            <TableHead>Data Abertura</TableHead>
+       
+            <TableHead>Ativar</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
          
       
-            {data?.map((pessoa:PessoaI) => (
-             <TableRow key={pessoa.id}>
-                <TableCell className="font-medium">{pessoa.nome}</TableCell>
-                <TableCell>{pessoa.cpf}</TableCell>
-                <TableCell>{pessoa.email}</TableCell>
-
+            {data?.map((processo:ProcessoI) => (
+             <TableRow key={processo.IdProcesso}>
+                <TableCell className="font-medium">{processo.Numero}</TableCell>
+                <TableCell className="font-medium">{processo.Situacao.Nome}</TableCell>
+                <TableCell className="font-medium">{processo.Modalidade.Nome}</TableCell>
+                <TableCell className="font-medium">{convertDataParaPtBr(processo.DataAbertura)}</TableCell>
+            
               
-
-                <TableCell><Link href={`/pessoas/novapessoa/${pessoa.id}`} ><FileEdit fill="#312e81" /></Link></TableCell>
-                <TableCell><Link href={`/familiares/${pessoa.id}`} ><UsersRound fill="#ea580c" /></Link></TableCell>
-                <TableCell><Link href={`/pessoas/beneficios/${pessoa.id}`} ><Bitcoin  fill="#572002" /></Link></TableCell>
-                {usuarioLogado.user.role.find((row:string) => row === "Admin") && 
+     
                 <TableCell>
-                    <AddPessoa id={pessoa.id} refetch={refetch} usuario={usuarioLogado}/>
+                    <AtivarSoftProcesso id={processo.IdProcesso} refetch={refetch} usuario={usuario} />
                 </TableCell>
-               }
+                
+
                 
                 </TableRow>
             ))}
@@ -175,4 +165,4 @@ const TablePessoasInativas = ({usuarioLogado}:TablePessoasProps) => {
      );
 }
  
-export default TablePessoasInativas
+export default TableProcessoInativos

@@ -31,6 +31,31 @@ const GetProcessos = async (usuario:UsuarioLogadoI,skip:number,filter:string) =>
     return fornecedadores ;
     
 }
+const GetProcessosDesativados = async (usuario:UsuarioLogadoI,skip:number,filter:string) => {
+
+    const url = `${baseUrl}/processo/desativados?take=${takeBase}&skip=${skip}&filter=${filter}`;	
+    const response = await fetch(url,{
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+
+        },
+    })
+   
+    if (response.statusText === 'Unauthorized') {
+        throw new Error("Você não tem autorização")
+     }
+  
+    if (!response.ok) {
+       throw new Error("Conexão com a rede está com problema")
+    }
+ 
+    const fornecedadores = await response.json() 
+ 
+    return fornecedadores ;
+    
+}
 
 const GetFornecedoresProcesso = async (usuario:UsuarioLogadoI,id:string) => {
 
@@ -194,4 +219,27 @@ const GetFornecedoresemprocesso = async (usuario:UsuarioLogadoI,skip:number,ativ
 }
    
 
-export{GetProcessos,CreateProcesso,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso}
+const DeleteProcesso = async (usuario:UsuarioLogadoI,id:string) => {
+
+    const url = `${baseUrl}/processo/changeprocesso/${id}`;	
+
+    const response = await fetch(url,{
+        method: 'PATCH',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+        },
+ 
+    })
+  
+
+    if (!response.ok) {
+       throw new Error("Conexão com a rede está com problemas")
+    }
+    const processo = await response.json() 
+ 
+    return processo ;
+    
+}
+
+export{GetProcessos,CreateProcesso,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso,DeleteProcesso,GetProcessosDesativados}

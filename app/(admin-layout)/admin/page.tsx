@@ -3,15 +3,15 @@
 
 
 import { getServerSession } from "next-auth";
-import TablePessoasInativas from "@/components/admin/TablePessoasInativas";
 import { authOptions } from "@/utils/authOptions";
+import TableProcessoInativos from "@/components/admin/TableProcessoInativos";
 
 
 
  async function  PessoasInativas() {
   const session = await getServerSession(authOptions) as any
     return ( 
-      <TablePessoasInativas  usuarioLogado={session}  />
+      <TableProcessoInativos usuario={session}  />
      );
 }
 

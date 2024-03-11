@@ -112,7 +112,7 @@ const Header = ({usuarioLogado}:any) => {
         
                   <CommandItem>
                   <SheetClose asChild>
-                    <Link href="/admin">Consultas Familia Excluida</Link>
+                    <Link href="/admin">Consultas Processo Excluida</Link>
                   </SheetClose>
                   </CommandItem>
                   <CommandItem>

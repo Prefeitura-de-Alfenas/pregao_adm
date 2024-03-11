@@ -1,5 +1,5 @@
 
-import EditarPessoa from "@/components/pessoas/EditarPessoa";
+
 import EditarUsuario from "@/components/usuarios/EditarUsuario";
 import { getUsuarioLogado } from "@/utils/getUsuarioLogado";
 

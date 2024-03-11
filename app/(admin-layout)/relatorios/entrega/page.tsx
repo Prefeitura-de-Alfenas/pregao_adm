@@ -1,6 +1,6 @@
 
 import TableRelatorioPorData from "@/components/relatorios/entrega/TableRelatorioPorData";
-import TablePessoasPorData from "@/components/relatorios/pessoas/pessoaspordata";
+
 import { authOptions } from "@/utils/authOptions";
 import { getServerSession } from "next-auth";
 
