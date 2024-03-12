@@ -20,12 +20,13 @@ import { Input } from "@/components/ui/input";
     PaginationPrevious,
   } from "@/components/ui/pagination"
 
-import { Box, FileBox, FileEdit,  Search } from "lucide-react";
-import { Button } from "../ui/button";
+import {  ArrowLeftFromLine, DownloadCloud,   Search } from "lucide-react";
+
 
 
 
 import {
+  useMutation,
   useQuery,
 } from '@tanstack/react-query'
 
@@ -33,33 +34,67 @@ import {  useState } from "react";
 
 
 
+
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
+import { useToast } from "@/components/ui/use-toast"
+import { GetArquivo, GetArquivoContrato } from "@/app/api/arquivo/route";
+import { Arquivo, ArquivoContrato } from "@/interfaces/arquivo/interface";
 
+import FixedButton from "./AddButton";
+import DeleteSoftArquivo from "./DialogDeleteSoft/DeleteArquivo";
 
-
-import { ProcessoI } from "@/interfaces/Processo/inteface";
-import { convertDataHoraParaPtBr, convertDataParaPtBr } from "@/utils/converDateParaInput";
-import DeleteSoftProcesso from "./DialogDeleteSoft/DelteProcesso";
-import { Getcontratos } from "@/app/api/contrato/routes";
-import { ContratoI } from "@/interfaces/Contrato/inteface";
-
-
-interface TableProcessoProps{
+interface TableArquivosContratoProps{
+  IdContrato:string;
   usuario:UsuarioLogadoI
 }
-const TableContrato = ({usuario}:TableProcessoProps) => {
-
+const TableArquivosContrato = ({usuario,IdContrato}:TableArquivosContratoProps) => {
+  const { toast } = useToast()
 
   const [skip,setSkipped] = useState(0)
   const [filter,setFilter] = useState('')
   const [search,setSearch] = useState('')
 
+
+
+
   // Queries
   const {data,isPending,isError,error,refetch} = useQuery({
-    queryKey:['contratos',skip,search],
-    queryFn:() => Getcontratos(usuario,skip,search),
+    queryKey:['contrtos',skip,search,IdContrato],
+    queryFn:() => GetArquivoContrato(usuario,IdContrato,skip,search),
 
     
+  })
+ 
+  const mutation = useMutation({
+    mutationFn: async (id:string) => {
+      let dataResponse = data;
+     
+    
+      return     GetArquivo(usuario,id)
+      .then(response => response)
+    },
+    onError:(error) => {
+      console.log(error)
+      toast({
+        title: error.message,
+       
+      })
+    },
+    onSuccess:(data) =>{
+
+      
+     
+           toast({
+          
+             title: "Cadastrado com sucesso",
+           })
+  
+          
+          
+           window.open(data, '_blank');
+      
+    
+    }
   })
 
  
@@ -73,6 +108,12 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
  const handelClickSearcher = () =>{
     setSearch(filter)
  }
+
+ const handelClickImagem = (id:string) =>{
+  mutation.mutate(id)
+ }
+
+
   if (isPending) {
     return <div className="flex items-center justify-center mt-5">Loading...</div>
   }
@@ -81,13 +122,13 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
     return <div className="flex items-center justify-center">Error: {error.message}</div>
   }
 
- 
-  
+   
     return ( 
-        <div className="flex flex-col ">    
-        <div className="flex items-start justify-start">
-        <Button className="ms-1 mt-4 mb-4 text-white font-bold"><Link href="/processo/create">Novo Contrato</Link></Button>
-        </div> 
+        <div className="flex flex-col "> 
+  
+        <div className="flex justify-end items-center me-7 mb-6">
+          <Link href="/contrato"><ArrowLeftFromLine size={48} /></Link>
+        </div>
         <div className="flex w-2/3 ms-1">
         <div className="relative w-full">
           <Input
@@ -98,7 +139,7 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
             value={filter}
             required
             className="mt-1 p-2 w-full border rounded-md mb-2 bg-transparent pr-10" // Aumente o padding à direita para acomodar o ícone
-            placeholder="Digite o número do processo"
+            placeholder="Digite o Nome"
           />
          <span className="absolute inset-y-0 right-0 pr-3 flex items-center cursor-pointer">
           <Search onClick={handelClickSearcher} />
@@ -106,40 +147,33 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
         </div>
       </div>
         <Table>
-        <TableCaption>Processos</TableCaption>
+        <TableCaption>Arquivos</TableCaption>
         <TableHeader>
             <TableRow>
+            <TableHead>Nome</TableHead>
             <TableHead>Nº Contrato</TableHead>
-            <TableHead>Nº Processo</TableHead>
-            <TableHead>Nº Pregao</TableHead>
-            <TableHead>Modalidade</TableHead>
-            <TableHead>Data Abertura</TableHead>
-            <TableHead>Arquivos</TableHead>
-            <TableHead>Fornnecedores</TableHead>
-            <TableHead>Editar</TableHead>
+            <TableHead>Arquivo</TableHead>
+            <TableHead>Delete</TableHead>
+           
             </TableRow>
         </TableHeader>
         <TableBody>
          
       
-            {data?.map((contrato:ContratoI) => (
-             <TableRow key={contrato.IdContratoAditivos}>
-                <TableCell className="font-medium">{contrato.NumeroContrato}</TableCell>
-                <TableCell className="font-medium">{contrato.Numeroprocesso}</TableCell>
-                <TableCell className="font-medium">{contrato.NumeroPregao}</TableCell>
-                <TableCell className="font-medium">{contrato.Modalidade.Nome}</TableCell>
-                <TableCell className="font-medium">{convertDataParaPtBr(contrato.DataPublicacao)}</TableCell>
-            
-              
-                <TableCell><Link href={`/arquivo/contrato/${contrato.IdContratoAditivos}`} ><FileBox   fill="#312e81" /></Link></TableCell>
-                <TableCell><Link href={`/contrato/processoes/${contrato.IdContratoAditivos}`} ><Box  fill="#312e81" /></Link></TableCell>
-                <TableCell><Link href={`/processo/edit/${contrato.IdContratoAditivos}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
+            {data?.map((arquivo:ArquivoContrato) => (
+             <TableRow key={arquivo.IdArquivo}>
+                <TableCell className="font-medium">{arquivo.Nome}</TableCell>
+                <TableCell className="font-medium">{arquivo.ContratosAditivos.NumeroContrato}</TableCell>
+             
+                <TableCell onClick={() => handelClickImagem(arquivo.IdArquivo)} className="cursor-pointer">
+                <DownloadCloud  fill="#312e81" />
+                </TableCell>
 
                 <TableCell>
-                    <DeleteSoftProcesso id={contrato.IdContratoAditivos} refetch={refetch} usuario={usuario} />
+                    <DeleteSoftArquivo id={arquivo.IdArquivo} refetch={refetch} usuario={usuario} />
                 </TableCell>
-                
 
+                 
                 
                 </TableRow>
             ))}
@@ -166,9 +200,10 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
           </PaginationItem>
         </PaginationContent>
        </Pagination>
+       <FixedButton pessoaId={IdContrato}/>
 </div>
 
      );
 }
  
-export default TableContrato
+export default TableArquivosContrato

@@ -3,6 +3,25 @@ import { ArquivoCreateI } from "@/interfaces/arquivo/interface";
 
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
 
+const GetArquivoContrato = async (usuario:UsuarioLogadoI,IdContrato:string,skip:number,filter:string) => {
+    const url = `${baseUrl}/arquivo/contratosallarquivos?id=${IdContrato}&take=${takeBase}&skip=${skip}&filter=${filter}`;	
+    const response = await fetch(url,{
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+        },
+    })
+
+    if (!response.ok) {
+       throw new Error("Conexão com a rede está com problema")
+    }
+    const arquivos = await response.json() 
+   console.log(arquivos)
+    return arquivos ;
+    
+}
+
 const GetArquivoProcesso = async (usuario:UsuarioLogadoI,IdProcesso:string,skip:number,filter:string) => {
     const url = `${baseUrl}/arquivo/processosallarquivos?id=${IdProcesso}&take=${takeBase}&skip=${skip}&filter=${filter}`;	
     const response = await fetch(url,{
@@ -107,4 +126,4 @@ const CreateArquivo = async (usuario: UsuarioLogadoI, data: ArquivoCreateI) => {
     return entrega;
 }
 
-export {GetArquivoProcesso,GetArquivo,CreateArquivo,DeleteArquivo}
+export {GetArquivoProcesso,GetArquivo,CreateArquivo,DeleteArquivo,GetArquivoContrato}
