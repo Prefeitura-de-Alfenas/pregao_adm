@@ -57,12 +57,13 @@ const formSchema = z.object({
 type FormData =z.infer<typeof formSchema>;
 
 interface GerarEntregaProps{
-  IdProcesso:string,
+  IdProcesso?:string,
+  IdContratoAditivos?:string,
   userLogado:UsuarioLogadoI,
  
 }
 
-function CarregarArquivo({IdProcesso,userLogado}:GerarEntregaProps) {
+function CarregarArquivo({IdProcesso,IdContratoAditivos,userLogado}:GerarEntregaProps) {
 
   const router = useRouter();
   const [fileName, setFileName] = useState('')
@@ -99,8 +100,14 @@ function CarregarArquivo({IdProcesso,userLogado}:GerarEntregaProps) {
           
              title: "Arquivo salvo com sucesso",
            })
+          
+           if(IdContratoAditivos){
+            router.push(`/arquivo/contrato/${IdContratoAditivos}`)
+           }else{
+            router.push(`/arquivo/${IdProcesso}`)
+           }
   
-           router.push(`/arquivo/${IdProcesso}`)
+           
            
       }
     
@@ -116,10 +123,11 @@ function CarregarArquivo({IdProcesso,userLogado}:GerarEntregaProps) {
       
       const dataEntrega : ArquivoCreateI = {
         ...arquivo,
-        IdProcesso:IdProcesso
+        IdProcesso:IdProcesso?IdProcesso : undefined,
+        IdContratoAditivos:IdContratoAditivos?IdContratoAditivos : undefined
 
       }
-
+      console.log("dataentrega",dataEntrega)
       mutation.mutate(dataEntrega)
     }
 

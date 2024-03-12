@@ -24,7 +24,8 @@ export interface ArquivoContrato{
 export interface ArquivoCreateI{
     file?: File,
     Nome: string,
-    IdProcesso: string,
+    IdProcesso?: string,
+    IdContratoAditivos?: string | undefined,
 
 }
 

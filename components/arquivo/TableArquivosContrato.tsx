@@ -40,8 +40,9 @@ import { useToast } from "@/components/ui/use-toast"
 import { GetArquivo, GetArquivoContrato } from "@/app/api/arquivo/route";
 import { Arquivo, ArquivoContrato } from "@/interfaces/arquivo/interface";
 
-import FixedButton from "./AddButton";
+
 import DeleteSoftArquivo from "./DialogDeleteSoft/DeleteArquivo";
+import FixedButtonContrato from "./AddButtonContrato";
 
 interface TableArquivosContratoProps{
   IdContrato:string;
@@ -86,7 +87,7 @@ const TableArquivosContrato = ({usuario,IdContrato}:TableArquivosContratoProps) 
      
            toast({
           
-             title: "Cadastrado com sucesso",
+             title: "Aberto com sucesso",
            })
   
           
@@ -200,7 +201,7 @@ const TableArquivosContrato = ({usuario,IdContrato}:TableArquivosContratoProps) 
           </PaginationItem>
         </PaginationContent>
        </Pagination>
-       <FixedButton pessoaId={IdContrato}/>
+       <FixedButtonContrato pessoaId={IdContrato}/>
 </div>
 
      );

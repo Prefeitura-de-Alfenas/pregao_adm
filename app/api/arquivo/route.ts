@@ -103,7 +103,13 @@ const CreateArquivo = async (usuario: UsuarioLogadoI, data: ArquivoCreateI) => {
     const formData = new FormData();
     formData.append('file', file); // Adiciona o arquivo ao FormData
     formData.append('Nome', data.Nome); // Adiciona o nome ao FormData
-    formData.append('IdProcesso', data.IdProcesso); // Adiciona o ID da pessoa ao FormData
+    if(data.IdContratoAditivos){
+        formData.append('IdContratoAditivos', data.IdContratoAditivos);
+    }
+    if(data.IdProcesso){
+        formData.append('IdProcesso', data.IdProcesso); // Adiciona o ID da pessoa ao FormData
+    }
+   
    
 
 
