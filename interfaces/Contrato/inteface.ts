@@ -23,7 +23,7 @@ export interface ContratoI{
     
 }
 
-export interface ProcessoCreateI{
+export interface ContratoCreateI{
 
     IdModalidade?:             number,
     IdOrgao?:               number,
@@ -37,8 +37,8 @@ export interface ProcessoCreateI{
     DataAssinatura?:             Date,
     Objeto?:                  string,
     CNPJ?:                  string,
-    IdUsuario:                number,
-    Modalidade:             MoadalidadeI,
+    IdUsuario?:                number,
+ 
 
  
 

@@ -55,5 +55,6 @@ export interface ProcessoxFornecedorI{
     IdProcesso:   string;
     IdFornecedor: string;
     usuario:UsuarioLogadoI;
+
 }
 

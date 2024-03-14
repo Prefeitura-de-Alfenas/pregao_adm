@@ -1,4 +1,5 @@
 import { baseUrl, takeBase } from "@/config/base";
+import { ContratoCreateI } from "@/interfaces/Contrato/inteface";
 import { ProcessoCreateI, ProcessoxFornecedorI } from "@/interfaces/Processo/inteface";
 
 
@@ -9,6 +10,32 @@ import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
 const Getcontratos = async (usuario:UsuarioLogadoI,skip:number,filter:string) => {
 
     const url = `${baseUrl}/contrato/findall?take=${takeBase}&skip=${skip}&filter=${filter}`;	
+    const response = await fetch(url,{
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+
+        },
+    })
+   
+    if (response.statusText === 'Unauthorized') {
+        throw new Error("Você não tem autorização")
+     }
+  
+    if (!response.ok) {
+       throw new Error("Conexão com a rede está com problema")
+    }
+ 
+    const fornecedadores = await response.json() 
+ 
+    return fornecedadores ;
+    
+}
+
+const GetProcessoContratoOrgao = async (usuario:UsuarioLogadoI,id:string) => {
+
+    const url = `${baseUrl}/contrato/processocontratofindall/${id}`;	
     const response = await fetch(url,{
         method: 'GET',
         headers: {
@@ -111,8 +138,8 @@ const GetModaliadeSituacao = async (usuario:UsuarioLogadoI) => {
 }
 
 
-const CreateProcesso = async (usuario:UsuarioLogadoI,data:ProcessoCreateI) => {
-    const url = `${baseUrl}/processo`;
+const CreateContrato = async (usuario:UsuarioLogadoI,data:ContratoCreateI) => {
+    const url = `${baseUrl}/contrato`;
     const response = await fetch(url,{
         method: 'POST',
         headers: {
@@ -125,9 +152,9 @@ const CreateProcesso = async (usuario:UsuarioLogadoI,data:ProcessoCreateI) => {
     if (!response.ok) {
        throw new Error("Conexão com a rede está com problema")
     }
-    const processo = await response.json() 
+    const contrato = await response.json() 
  
-    return processo ;
+    return contrato ;
 }
 
 const UpdateProcesso = async (usuario:UsuarioLogadoI,id:string,data:ProcessoCreateI) => {
@@ -242,4 +269,4 @@ const DeleteProcesso = async (usuario:UsuarioLogadoI,id:string) => {
     
 }
 
-export{Getcontratos,CreateProcesso,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso,DeleteProcesso,GetProcessosDesativados}
+export{GetProcessoContratoOrgao,Getcontratos,CreateContrato,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso,DeleteProcesso,GetProcessosDesativados}

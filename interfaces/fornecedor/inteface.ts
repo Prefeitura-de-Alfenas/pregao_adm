@@ -38,3 +38,10 @@ export interface FornecedorEntregaI{
    
 }
 
+export interface ProcessoContratoxFornecedorI{
+    IdProcesso:   string;
+    IdFornecedor: string;
+    fornecedor:FornecedorI;
+
+}
+
