@@ -106,7 +106,7 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
         </div>
       </div>
         <Table>
-        <TableCaption>Processos</TableCaption>
+        <TableCaption>Contrato</TableCaption>
         <TableHeader>
             <TableRow>
             <TableHead>Nº Contrato</TableHead>
@@ -117,6 +117,7 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
             <TableHead>Arquivos</TableHead>
             <TableHead>Fornnecedores</TableHead>
             <TableHead>Editar</TableHead>
+            <TableHead>Excluir</TableHead>
             </TableRow>
         </TableHeader>
         <TableBody>
@@ -133,7 +134,7 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
               
                 <TableCell><Link href={`/arquivo/contrato/${contrato.IdContratoAditivos}`} ><FileBox   fill="#312e81" /></Link></TableCell>
                 <TableCell><Link href={`/contrato/processoes/${contrato.IdContratoAditivos}`} ><Box  fill="#312e81" /></Link></TableCell>
-                <TableCell><Link href={`/processo/edit/${contrato.IdContratoAditivos}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/contrato/edit/${contrato.IdContratoAditivos}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
 
                 <TableCell>
                     <DeleteSoftProcesso id={contrato.IdContratoAditivos} refetch={refetch} usuario={usuario} />

@@ -113,6 +113,7 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
             <TableHead>Data Abertura</TableHead>
             <TableHead>Arquivos</TableHead>
             <TableHead>Fornnecedores</TableHead>
+            <TableHead>Add Contrato</TableHead>
             <TableHead>Editar</TableHead>
             </TableRow>
         </TableHeader>
@@ -128,7 +129,8 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
             
               
                 <TableCell><Link href={`/arquivo/${processo.IdProcesso}`} ><FileBox   fill="#312e81" /></Link></TableCell>
-                <TableCell><Link href={`/processo/processoes/${processo.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/processo/fornecedores/${processo.IdProcesso}`} ><Box  fill="#312e81" /></Link></TableCell>
+                <TableCell><Link href={`/contrato/create/${processo.IdProcesso}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
                 <TableCell><Link href={`/processo/edit/${processo.IdProcesso}`} ><FileEdit  fill="#312e81" /></Link></TableCell>
 
                 <TableCell>

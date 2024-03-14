@@ -1,3 +1,5 @@
+import { OrgaoI } from "../Orgao/inteface";
+import { FornecedorI } from "../fornecedor/inteface";
 import { MoadalidadeI } from "../moadalidade/inteface"
 import { SituacaoI } from "../situacao/interface"
 import { UsuarioLogadoI } from "../usuario/interface";
@@ -52,4 +54,10 @@ export interface ContratoxFornecedorI{
     IdFornecedor: string;
     usuario:UsuarioLogadoI;
 }
+
+export interface FornecedorOrgaoI{
+    fornecedor:FornecedorI;
+    orgao:OrgaoI;
+}
+
 

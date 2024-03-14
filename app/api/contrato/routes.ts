@@ -157,8 +157,8 @@ const CreateContrato = async (usuario:UsuarioLogadoI,data:ContratoCreateI) => {
     return contrato ;
 }
 
-const UpdateProcesso = async (usuario:UsuarioLogadoI,id:string,data:ProcessoCreateI) => {
-    const url = `${baseUrl}/processo/${id}`;
+const UpdateContrato = async (usuario:UsuarioLogadoI,id:string,data:ContratoCreateI) => {
+    const url = `${baseUrl}/contrato/${id}`;
     const response = await fetch(url,{
         method: 'PATCH',
         headers: {
@@ -176,8 +176,8 @@ const UpdateProcesso = async (usuario:UsuarioLogadoI,id:string,data:ProcessoCrea
     return processo ;
 }
 
-const GetProcessoById = async (usuario:UsuarioLogadoI,id:string)=>{
-    const url = `${baseUrl}/processo/${id}`;
+const GetContratoById = async (usuario:UsuarioLogadoI,id:string)=>{
+    const url = `${baseUrl}/contrato/${id}`;
     const response = await fetch(url,{
         method:'GET',
         headers:{
@@ -191,10 +191,10 @@ const GetProcessoById = async (usuario:UsuarioLogadoI,id:string)=>{
     }
     
    
-    const processo = await response.json();
+    const contrato = await response.json();
     
 
-    return processo;
+    return contrato;
 }
 
 const ForncedorChange = async(data:ProcessoxFornecedorI) =>{
@@ -269,4 +269,25 @@ const DeleteProcesso = async (usuario:UsuarioLogadoI,id:string) => {
     
 }
 
-export{GetProcessoContratoOrgao,Getcontratos,CreateContrato,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso,DeleteProcesso,GetProcessosDesativados}
+const GetFornecedorOrgao = async (usuario:UsuarioLogadoI)=>{
+    const url = `${baseUrl}/contrato/fornecedorandorgao`;
+    const response = await fetch(url,{
+        method:'GET',
+        headers:{
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+        }
+    })
+
+    if(!response.ok) {
+        throw new Error("Conexão com a rede está com problemaas");
+    }
+    
+   
+    const fornedororgao = await response.json();
+    
+
+    return fornedororgao;
+}
+
+export{GetProcessoContratoOrgao,Getcontratos,CreateContrato,UpdateContrato,GetContratoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso,DeleteProcesso,GetProcessosDesativados,GetFornecedorOrgao}

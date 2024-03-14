@@ -1,16 +1,17 @@
 
-import EditarProcesso from "@/components/processo/EditarProcesso";
+import EditarContrato from "@/components/contrato/EditarContrato";
+
 
 import { getUsuarioLogado } from "@/utils/getUsuarioLogado";
 
 
 
 
-async function EditProcesso({ params }: { params: { id: string } }) {
+async function EditContrato({ params }: { params: { id: string } }) {
   const usuarioLogado = await getUsuarioLogado()
   return (
-    <EditarProcesso IdProcesso={params.id} usuario={usuarioLogado}/>
+    <EditarContrato id={params.id} usuario={usuarioLogado}/>
     );
 }
 
-export default EditProcesso;
+export default EditContrato;
