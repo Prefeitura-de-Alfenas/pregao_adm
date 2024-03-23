@@ -127,7 +127,7 @@ function CarregarArquivo({IdProcesso,IdContratoAditivos,userLogado}:GerarEntrega
         IdContratoAditivos:IdContratoAditivos?IdContratoAditivos : undefined
 
       }
-      console.log("dataentrega",dataEntrega)
+    
       mutation.mutate(dataEntrega)
     }
 

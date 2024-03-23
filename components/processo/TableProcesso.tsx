@@ -107,7 +107,7 @@ const TableProcesso = ({usuario}:TableProcessoProps) => {
         <TableCaption>Processos</TableCaption>
         <TableHeader>
             <TableRow>
-            <TableHead>Numeor</TableHead>
+            <TableHead>Numero</TableHead>
             <TableHead>Situação</TableHead>
             <TableHead>Modalidade</TableHead>
             <TableHead>Data Abertura</TableHead>

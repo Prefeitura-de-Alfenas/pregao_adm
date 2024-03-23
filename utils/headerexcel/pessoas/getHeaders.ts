@@ -1,7 +1,7 @@
 export function getHeadersPessoas(){
     const header = [
-        "id:string",
-        "nome: string",
+        "IdProcesso:string",
+        "Nome: string",
         "cpf:string",
         "sexo: string",
         "telefone: string",

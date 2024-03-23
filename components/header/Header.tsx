@@ -60,20 +60,32 @@ const Header = ({usuarioLogado}:any) => {
                   
                   <CommandItem>
                   <SheetClose asChild>
-                    <Link href="/pessoas">Consulta Familia</Link>
+                    <Link href="/processo">Processo</Link>
                   </SheetClose>
                   </CommandItem>
            
                   <CommandItem>
                   <SheetClose asChild>
-                    <Link href="/beneficios">Consulta Benefícios</Link>
+                    <Link href="/contrato">Contratos</Link>
                   </SheetClose>
                   </CommandItem>
                    
                   
                   <CommandItem>
                   <SheetClose asChild>
-                    <Link href="/equipamentos">Consulta Equipamentos</Link>
+                    <Link href="/fornecedor">Fornecedores</Link>
+                  </SheetClose>
+                  </CommandItem>
+
+                  <CommandItem>
+                  <SheetClose asChild>
+                    <Link href="/situacao">Situação</Link>
+                  </SheetClose>
+                  </CommandItem>
+
+                  <CommandItem>
+                  <SheetClose asChild>
+                    <Link href="/modalidade">Modalidade</Link>
                   </SheetClose>
                   </CommandItem>
 
@@ -85,15 +97,15 @@ const Header = ({usuarioLogado}:any) => {
                   
                   <CommandItem>
                   <SheetClose asChild>
-                    <Link href="/relatorios/pessoas/pessoapordata">Relatorio de Familias</Link>
+                    <Link href="/relatorios/processo">Relatorio de Processo</Link>
                   </SheetClose>
                   </CommandItem>
            
-                  <CommandItem>
+                  {/* <CommandItem>
                   <SheetClose asChild>
                     <Link href="/relatorios/entrega">Relatorio Entregas</Link>
                   </SheetClose>
-                  </CommandItem>
+                  </CommandItem> */}
                    
                   
                   <CommandItem>
@@ -133,7 +145,7 @@ const Header = ({usuarioLogado}:any) => {
 
         </div>
        
-        <div>Sistema de Gestão Social</div>
+        <div>Pregão Online</div>
         <div className="pe-4"><img src="logoprefeitura.png" alt="logo" className="w-14 h-14  rounded-full" /></div>
      
        </header>    

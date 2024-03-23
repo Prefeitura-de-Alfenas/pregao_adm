@@ -84,7 +84,7 @@ const formSchema = z.object({
     message: "Tem que ter no minimo 1 caracteres",
   }),
   CNPJ:z.string().optional(),
-  IdUsuario: z.number().optional(),
+   IdUsuario: z.number().optional(),
 })
 
 
@@ -185,8 +185,13 @@ function EditarContrato({usuario,id}:UpadateContratoProps) {
    },[data,setValue])
 
    const onSubmit = async (data:FormData) => {
+    const idusuario = parseInt(usuario.user.id.toString())
+    const dataResponse = {
+      ...data,
+      IdUsuario:idusuario
+    }
 
-    mutation.mutate(data)
+    mutation.mutate(dataResponse)
    }
    if(isLoading || isLoadingFornecedorOrgao){
     return <div className="flex items-center justify-center mt-5">Loading...</div>
@@ -206,7 +211,7 @@ function EditarContrato({usuario,id}:UpadateContratoProps) {
                    <option key={item.IdFornecedor} value={item.IdFornecedor}>{item.Empresa}</option>
                ))}
             </select>
-            {errors.IdFornecedor?.message && <p className="text-sm text-red-400">{errors.IdOrgao?.message}</p> }
+            {errors.IdFornecedor?.message && <p className="text-sm text-red-400">{errors.IdFornecedor?.message}</p> }
           </div>
 
           <div className="mb-4">

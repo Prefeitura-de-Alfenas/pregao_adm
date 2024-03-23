@@ -1,6 +1,6 @@
 import { MoadalidadeI } from "../moadalidade/inteface"
 import { SituacaoI } from "../situacao/interface"
-import { UsuarioLogadoI } from "../usuario/interface";
+import { UsuarioI, UsuarioLogadoI } from "../usuario/interface";
 
 
 
@@ -58,3 +58,19 @@ export interface ProcessoxFornecedorI{
 
 }
 
+
+
+export interface RelatorioProcessoFilterData{
+    IdProcesso: string,
+    IdSituacao?:               number,
+    IdModalidade?:             number,
+    NumeroprocessoPrefeitura?: string,
+    NumeroprocessoSaude?:      string,
+    Numero:                   string,
+    ValorLicitacao:           number,
+    DataAbertura:             Date,
+    Objeto:                  string,
+    Modalidade:             MoadalidadeI,
+    Situacao:               SituacaoI,
+  }
+  

@@ -242,4 +242,24 @@ const DeleteProcesso = async (usuario:UsuarioLogadoI,id:string) => {
     
 }
 
-export{GetProcessos,CreateProcesso,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso,DeleteProcesso,GetProcessosDesativados}
+const GetProcessoPrData = async (usuario:UsuarioLogadoI,datainical:string,datafinal:string,filter:string) => {
+
+    const url = `${baseUrl}/processo/dataprocessofind/${datainical}/datefinal/${datafinal}/${filter}`;	
+    const response = await fetch(url,{
+        method: 'GET',
+        headers: {
+            'Content-type': 'application/json',
+            'Authorization' :`Bearer ${usuario.user.access_token}`
+        },
+    })
+
+    if (!response.ok) {
+       throw new Error("Conexão com a rede está com problema")
+    }
+    const pessoas = await response.json() 
+ 
+    return pessoas ;
+    
+}
+
+export{GetProcessoPrData,GetProcessos,CreateProcesso,UpdateProcesso,GetProcessoById,GetModaliadeSituacao,GetFornecedoresProcesso,ForncedorChange,GetFornecedoresemprocesso,DeleteProcesso,GetProcessosDesativados}

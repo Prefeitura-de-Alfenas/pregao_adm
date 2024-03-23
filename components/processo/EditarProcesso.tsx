@@ -171,8 +171,12 @@ function EditarProcesso({usuario,IdProcesso}:EditProcessoProps ) {
   
     }
     const onSubmit = async (data:FormData) => {
-
-      mutation.mutate(data)
+      const idusuario = parseInt(usuario.user.id.toString())
+      const dataResponse = {
+        ...data,
+        IdUsuario:idusuario
+      }
+      mutation.mutate(dataResponse)
     }
 
     if(isLoadingSitacao){

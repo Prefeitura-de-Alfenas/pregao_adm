@@ -27,22 +27,24 @@ import {
   useMutation,
   useQuery,
 } from '@tanstack/react-query'
-import {  GetPessas, GetPessasPrData } from "@/app/api/pessoas/routes";
+
 import { PessoaCreateI, PessoaI } from "@/interfaces/pessoa/interface";
 import { useState } from "react";
 import { UsuarioLogadoI } from "@/interfaces/usuario/interface";
 import { Button } from "@/components/ui/button";
-import { convertDataHoraParaPtBr } from "@/utils/converDateParaInput";
+import { convertDataHoraParaPtBr, convertDataParaPtBr } from "@/utils/converDateParaInput";
 import { getHeadersPessoas } from "@/utils/headerexcel/pessoas/getHeaders";
 import { generateExcel } from "@/utils/exportExcel";
 import { now } from "next-auth/client/_utils";
 import { format, sub, subDays } from "date-fns";
+import { GetProcessoPrData } from "@/app/api/processo/routes";
+import { ProcessoI, RelatorioProcessoFilterData } from "@/interfaces/Processo/inteface";
 
 
 interface TablePessoasProps{
   usuarioLogado:UsuarioLogadoI
 }
-const TablePessoasPorData = ({usuarioLogado}:TablePessoasProps) => {
+const TableProcessoPorData = ({usuarioLogado}:TablePessoasProps) => {
   
     const todayString = format(new Date(), 'yyyy-MM-dd');
 
@@ -59,7 +61,7 @@ const TablePessoasPorData = ({usuarioLogado}:TablePessoasProps) => {
   // Queries
   const {data,isPending,isError,error, refetch } = useQuery({
     queryKey:['pessoas',dataInicialSearch,dataFinalSearch,search,usuarioLogado],
-    queryFn:() => GetPessasPrData(usuarioLogado,dataInicialSearch,dataFinalSearch,search),
+    queryFn:() => GetProcessoPrData(usuarioLogado,dataInicialSearch,dataFinalSearch,search),
 
     
   })
@@ -93,15 +95,41 @@ const TablePessoasPorData = ({usuarioLogado}:TablePessoasProps) => {
  }
 
  function GerarExel(){
-    const headerPessoas = getHeadersPessoas();
-    const date = new Date();
-    
-    const novoFormato = data.map((item:any )=> headerPessoas.map(campo => item[campo]));
+    const headerProcesso = [
+      "IdProcesso",
+      "Situacao",
+      "Modalidade",
+      "NumeroprocessoPrefeitura",
+      "NumeroprocessoSaude",
+      "Numero",
+      "ValorLicitacao",
+      "DataAbertura",
+      "Objeto",
 
-    console.log(headerPessoas)
-    console.log(novoFormato)
+  ];
+  const date = new Date();
 
-    generateExcel(`pessoas_${convertDataHoraParaPtBr(date)}`,headerPessoas,novoFormato)
+ 
+  const arrayDeValores: RelatorioProcessoFilterData[][] = data.map((objeto:RelatorioProcessoFilterData) =>
+      [
+        objeto.IdProcesso,
+        objeto.Situacao.Nome,
+        objeto.Modalidade.Nome,
+        objeto.NumeroprocessoPrefeitura,
+        objeto.NumeroprocessoSaude,
+        objeto.Numero,
+        objeto.ValorLicitacao,
+        convertDataHoraParaPtBr(objeto.DataAbertura),
+        objeto.Objeto,
+       
+      ]
+    );
+
+
+
+    generateExcel(`entregas_${convertDataHoraParaPtBr(date)}`,headerProcesso,arrayDeValores)
+
+    generateExcel(`pessoas_${convertDataHoraParaPtBr(date)}`,headerProcesso,arrayDeValores)
     
 }
 
@@ -175,29 +203,30 @@ const TablePessoasPorData = ({usuarioLogado}:TablePessoasProps) => {
         <TableCaption>Pessoas</TableCaption>
         <TableHeader>
             <TableRow>
-            <TableHead>Nome</TableHead>
-            <TableHead>CPF</TableHead>
-            <TableHead>Sexo</TableHead>
-            <TableHead>Data Nascimento</TableHead>
-            <TableHead>Estadocivil</TableHead>
-            <TableHead>Renda</TableHead>
+            <TableHead>Numero</TableHead>
+            <TableHead>Situação</TableHead>
+            <TableHead>Modalidade</TableHead>
+            <TableHead>Data Abertura</TableHead>
 
             </TableRow>
         </TableHeader>
         <TableBody>
          
       
-            {data?.map((pessoa:PessoaI) => (
-             <TableRow key={pessoa.id}>
-                <TableCell className="font-medium">{pessoa.nome}</TableCell>
-                <TableCell>{pessoa.cpf}</TableCell>
-                <TableCell>{pessoa.sexo}</TableCell>
-                <TableCell>{convertDataHoraParaPtBr(pessoa.datanascimento)}</TableCell>
-                <TableCell>{pessoa.estadocivil}</TableCell>
-                <TableCell>{pessoa.renda.toString()}</TableCell>
+        {data?.map((processo:ProcessoI) => (
+             <TableRow key={processo.IdProcesso}>
+                <TableCell className="font-medium">{processo.Numero}</TableCell>
+                <TableCell className="font-medium">{processo.Situacao.Nome}</TableCell>
+                <TableCell className="font-medium">{processo.Modalidade.Nome}</TableCell>
+                <TableCell className="font-medium">{convertDataParaPtBr(processo.DataAbertura)}</TableCell>
+            
+
+                
+
                 
                 </TableRow>
             ))}
+          
           
             
         </TableBody>
@@ -209,4 +238,4 @@ const TablePessoasPorData = ({usuarioLogado}:TablePessoasProps) => {
      );
 }
  
-export default TablePessoasPorData
+export default TableProcessoPorData

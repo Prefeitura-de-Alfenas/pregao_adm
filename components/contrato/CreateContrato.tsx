@@ -154,7 +154,12 @@ function CriarContrato({usuario,IdProcesso}:CriarContratoProps) {
 
    const onSubmit = async (data:FormData) => {
 
-    mutation.mutate(data)
+      const idusuario = parseInt(usuario.user.id.toString())
+      const dataResponse = {
+        ...data,
+        IdUsuario:idusuario
+      }
+    mutation.mutate(dataResponse)
    }
    if(isLoadingSitacao){
     return <div className="flex items-center justify-center mt-5">Loading...</div>

@@ -58,8 +58,6 @@ const TableContrato = ({usuario}:TableProcessoProps) => {
   const {data,isPending,isError,error,refetch} = useQuery({
     queryKey:['contratos',skip,search],
     queryFn:() => Getcontratos(usuario,skip,search),
-
-    
   })
 
  
